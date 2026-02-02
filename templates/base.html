@@ -1,4 +1,4 @@
-{% load static %}
+{% load static tailwind_tags %}
 
 <!DOCTYPE html>
 <html lang="pl-PL" prefix="og: https://ogp.me/ns#">
@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}Cold Mailing App{% endblock %}</title>
-         <script src="https://cdn.tailwindcss.com"></script>
+        {% tailwind_css %}
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         {% block extra_css %}{% endblock %}
     </head>

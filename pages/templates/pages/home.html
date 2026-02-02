@@ -3,5 +3,8 @@
 {% block content %}
 <h1>Witaj w Cold Mailing</h1>
 <p>Twoja strona główna</p>
+<div>
+            Masz konto? <a href="{% url 'accounts:login' %}">Zaloguj</a>
+        </div>
 
 {% endblock %}
