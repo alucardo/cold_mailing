@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 14:33+0000\n"
+"POT-Creation-Date: 2026-02-13 21:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,3 +23,31 @@ msgstr ""
 #: settings/models.py:14
 msgid "API Type"
 msgstr "Typ API"
+
+#: settings/models.py:15
+msgid "Wybierz typ API (np. OpenAI, Anthropic)"
+msgstr ""
+
+#: settings/models.py:19
+msgid "Name"
+msgstr ""
+
+#: settings/models.py:20
+msgid "Twoja wewnętrzna nazwa klucza API"
+msgstr ""
+
+#: settings/models.py:23
+msgid "Value"
+msgstr ""
+
+#: settings/models.py:24
+msgid "Klucz API lub inny tekst konfiguracyjny"
+msgstr ""
+
+#: settings/models.py:26
+msgid "Created at"
+msgstr ""
+
+#: settings/models.py:27
+msgid "Updated at"
+msgstr ""

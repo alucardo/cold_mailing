@@ -21,19 +21,29 @@
                 <table class="min-w-full text-left text-sm/6 text-zinc-950 dark:text-white">
                     <thead class="text-zinc-500 dark:text-zinc-400">
                         <tr>
-                            <th></th>
-                            <th>Nazwa</th>
-                            <th>Data utworzenia</th>
-                            <th></th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1"></th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">Nazwa</th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">Data utworzenia</th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in api_list %}
-                            <tr>
-                                <td></td>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.created_at }}</td>
-                                <td></td>
+                            <tr class="has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/2.5 hover:bg-zinc-950/2.5 dark:hover:bg-white/2.5">
+                                <td class="relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1"></td>
+                                <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">{{ item.name }}</td>
+                                <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">{{ item.created_at }}</td>
+                                <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                                    <form method="post" action="{% url 'settings:delete_api' pk=item.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button
+                                            type="submit"
+                                            onclick="return confirm('Czy na pewno usunąć {{ item.name }}?')"
+                                            class="text-sm/6 font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300">
+                                            Usuń
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
