@@ -11,18 +11,20 @@ class ApiSetting(models.Model):
     api_type = models.ForeignKey(
         ApiType,
         on_delete=models.CASCADE,
-        verbose_name=_("API Type")
+        verbose_name=_("API Type"),
+        help_text=_("Wybierz typ API (np. OpenAI, Anthropic)")  # ← DODAJ
     )
     name = models.CharField(
         max_length=200,
-        help_text="Nazwa ustawienia (np. 'API Key', 'Endpoint')"
+        verbose_name=_("Name"),
+        help_text=_("Twoja wewnętrzna nazwa klucza API")  # ← LEPSZY TEKST
     )
     text = models.TextField(
-        verbose_name="Wartość",
-        help_text="Wartość ustawienia"
+        verbose_name=_("Value"),
+        help_text=_("Klucz API lub inny tekst konfiguracyjny")  # ← LEPSZY TEKST
     )
-    created_at = models.DateTimeField(auto_now_add=True)  # data utworzenia
-    updated_at = models.DateTimeField(auto_now=True)  # data modyfikacji
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
         return self.name
