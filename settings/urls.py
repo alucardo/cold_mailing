@@ -5,5 +5,6 @@ app_name = 'settings'
 urlpatterns = [
     path('apis/', views.apis_view, name='list_apis'),
     path('apis/create/', views.create_api_view, name='create_api'),
+    path('apis/edit/<int:pk>/', views.edit_api_view, name='edit_api'),
     path('apis/delete/<int:pk>/', views.delete_api_view, name='delete_api'),
 ]

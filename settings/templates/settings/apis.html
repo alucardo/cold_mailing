@@ -34,6 +34,10 @@
                                 <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">{{ item.name }}</td>
                                 <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">{{ item.created_at }}</td>
                                 <td class="text-zinc-500 relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                                   <a href="{% url 'settings:edit_api' pk=item.id %}"
+                                       class="text-sm/6 font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
+                                        Edytuj
+                                    </a>
                                     <form method="post" action="{% url 'settings:delete_api' pk=item.id %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button

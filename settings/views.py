@@ -14,16 +14,28 @@ def create_api_view(request):
     if request.method == 'POST':
         form = CreateApiForm(request.POST)
         if form.is_valid():
-            api = ApiSetting(
-                name = form.cleaned_data['name'],
-                text = form.cleaned_data['text'],
-                api_type_id = 1
-            )
-            api.save()
+            api = form.save()
+            messages.success(request, f'Dodano {api.name}')
             return redirect('settings:list_apis')
     else:
         form = CreateApiForm()
     return render(request, 'settings/create_api.html', {'form': form})
+
+
+def edit_api_view(request, pk):
+    api_setting = get_object_or_404(ApiSetting, pk=pk)
+
+    if request.method == 'POST':
+        form = CreateApiForm(request.POST, instance=api_setting)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Zaktualizowano {api_setting.name}')
+            return redirect('settings:list_apis')
+    else:
+        form = CreateApiForm(instance=api_setting)
+
+    return render(request, 'settings/edit_api.html', {'form': form, 'api': api_setting})
+
 
 def delete_api_view(request, pk):
     api_setting = get_object_or_404(ApiSetting, pk=pk)
