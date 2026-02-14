@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Witaj w Cold Mailing</h1>
-<p>Twoja strona główna</p>
-<div>
-            Masz konto? <a href="{% url 'accounts:login' %}">Zaloguj</a>
-        </div>
-
+    <h1 class="font-plexSerif font-medium text-white tracking-[-1.96px] leading-[1.12] text-[40px] sm:text-[54px]">
+        Witaj w Cold Mailing
+    </h1>
+    <div>
+        {% if user.is_authenticated %}
+            <!-- Użytkownik JEST zalogowany -->
+            <p>Witaj, {{ user.username }}!</p>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+        {% else %}
+            <!-- Użytkownik NIE jest zalogowany -->
+            <p>Witaj, gościu!</p>
+            <a href="{% url 'accounts:login' %}">Zaloguj</a>
+        {% endif %}
+    </div>
 {% endblock %}
