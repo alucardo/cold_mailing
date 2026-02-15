@@ -1,8 +1,11 @@
+import imaplib
+import ssl
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.mail import EmailMessage, get_connection
 from ..models import EmailAccount
 from ..forms import EmailAccountForm, TestEmailForm
+from ..services import test_smtp_connection, test_imap_connection
 
 
 def email_accounts_view(request):
@@ -26,61 +29,36 @@ def create_email_account_view(request):
 
 
 def show_email_account_view(request, pk):
-    """Szczegóły konta e-mail + test wysyłania"""
+    """Szczegóły konta e-mail + test wysyłania SMTP + test IMAP"""
     account = get_object_or_404(EmailAccount, pk=pk)
 
     if request.method == 'POST':
-        form = TestEmailForm(request.POST)
-        if form.is_valid():
-            recipient = form.cleaned_data['recipient_email']
+        test_type = request.POST.get('test_type')
 
-            try:
-                # Konfiguracja połączenia SMTP z danymi z konta
-                connection = get_connection(
-                    backend='django.core.mail.backends.smtp.EmailBackend',
-                    host=account.smtp_host,
-                    port=account.smtp_port,
-                    username=account.smtp_username,
-                    password=account.smtp_password,
-                    use_tls=account.smtp_use_tls,
-                    fail_silently=False,
-                    timeout=10,
-                )
+        if test_type == 'smtp':
+            form = TestEmailForm(request.POST)
+            if form.is_valid():
+                recipient = form.cleaned_data['recipient_email']
 
-                # Treść testowej wiadomości
-                email = EmailMessage(
-                    subject=f'Test połączenia - {account.name}',
-                    body=f'''To jest testowa wiadomość z konta: {account.name}
-                        Email: {account.email}
-                        Wysłano: {account.created_at.strftime("%d.m.Y %H:%M")}
-                        
-                        Jeśli widzisz tę wiadomość, połączenie SMTP działa poprawnie!
-                        
-                        ---
-                        Cold Mailing System''',
-                    from_email=f'{account.from_name} <{account.email}>',
-                    to=[recipient],
-                    connection=connection,
-                )
+                # Użyj serwisu
+                success, msg = test_smtp_connection(account, recipient)
 
-                # Wyślij email
-                email.send()
+                if success:
+                    messages.success(request, f'✅ SMTP: {msg}')
+                else:
+                    messages.error(request, f'❌ SMTP: {msg}')
 
-                messages.success(
-                    request,
-                    f'✅ Email testowy wysłany pomyślnie na adres {recipient}'
-                )
+        elif test_type == 'imap':
+            # Użyj serwisu
+            success, msg = test_imap_connection(account)
 
-            except Exception as e:
-                messages.error(
-                    request,
-                    f'❌ Błąd podczas wysyłania: {str(e)}'
-                )
+            if success:
+                messages.success(request, f'✅ IMAP: {msg}')
+            else:
+                messages.error(request, f'❌ IMAP: {msg}')
 
-            # Przekieruj do tego samego widoku (POST-Redirect-GET pattern)
-            return redirect('settings:show_email_account', pk=pk)
+        return redirect('settings:show_email_account', pk=pk)
     else:
-        # GET - pokaż pusty formularz
         form = TestEmailForm(initial={'recipient_email': account.email})
 
     return render(request, 'settings/show_email_account.html', {
