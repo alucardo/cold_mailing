@@ -16,9 +16,11 @@ class MailingListForm(forms.ModelForm):
 
 
 class ContactForm(forms.ModelForm):
+    """Formularz do tworzenia i edycji kontaktu"""
+
     class Meta:
         model = Contact
-        fields = ['email', 'name']  # ← DODAJ email!
+        fields = ['email', 'name', 'status']
 
         widgets = {
             'email': forms.EmailInput(attrs={
@@ -27,32 +29,50 @@ class ContactForm(forms.ModelForm):
             }),
             'name': forms.TextInput(attrs={
                 'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
-                'placeholder': 'Jan Kowalski (opcjonalne)'
+                'placeholder': 'Jan Kowalski'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
             })
         }
 
-    def __init__(self, *args, mailing_list=None, **kwargs):
+    def __init__(self, *args, mailing_list=None, hide_status=True, **kwargs):
         """
-        Inicjalizacja formularza z listą mailingową.
-        Potrzebne do walidacji duplikatów.
+        Inicjalizacja formularza.
+
+        Args:
+            mailing_list: Lista mailingowa do walidacji
+            hide_status: Ukryj pole status (dla tworzenia nowych kontaktów)
         """
         super().__init__(*args, **kwargs)
         self.mailing_list = mailing_list
+
         # Name jest opcjonalne
         self.fields['name'].required = False
 
+        # Ukryj status przy tworzeniu (zawsze będzie 'active')
+        if hide_status:
+            self.fields['status'].widget = forms.HiddenInput()
+            self.fields['status'].initial = 'active'
+
     def clean_email(self):
-        """
-        Walidacja - sprawdź czy email już istnieje na tej liście
-        """
+        """Walidacja - sprawdź duplikaty emaili"""
         email = self.cleaned_data.get('email')
 
-        if self.mailing_list and Contact.objects.filter(
+        if self.mailing_list:
+            # Zapytanie bazowe
+            existing = Contact.objects.filter(
                 mailing_list=self.mailing_list,
                 email=email
-        ).exists():
-            raise forms.ValidationError(
-                f'Adres {email} już istnieje na tej liście mailingowej.'
             )
+
+            # Jeśli edycja - wykluczamy edytowany kontakt
+            if self.instance.pk:
+                existing = existing.exclude(pk=self.instance.pk)
+
+            if existing.exists():
+                raise forms.ValidationError(
+                    f'Adres {email} już istnieje na tej liście.'
+                )
 
         return email

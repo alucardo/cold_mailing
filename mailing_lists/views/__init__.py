@@ -15,6 +15,8 @@ from .list_views import (
 # Widoki dla kontaktów
 from .contact_views import (
     create_contact_view,
+    edit_contact_view,
+    delete_contact_view,
 )
 
 # To pozwala importować: from mailing_lists.views import lists_view
@@ -25,4 +27,6 @@ __all__ = [
     'edit_list_view',
     'delete_list_view',
     'create_contact_view',
+    'edit_contact_view',
+    'delete_contact_view',
 ]

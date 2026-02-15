@@ -1,0 +1,58 @@
+{% extends "loged.html" %}
+
+{% block content %}
+<form class="mx-auto max-w-4xl" method="post">
+    {% csrf_token %}
+
+    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
+        Edytuj kontakt: {{ contact.email }}
+    </h1>
+    <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+        Lista: {{ mailing_list.name }}
+    </p>
+    <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+
+    {% for field in form.visible_fields %}
+    <section class="grid gap-x-8 gap-y-6 sm:grid-cols-2 mb-10">
+        <div class="space-y-1">
+            <h2 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 dark:text-white">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+            </h2>
+            {% if field.help_text %}
+            <p class="text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400">
+                {{ field.help_text }}
+            </p>
+            {% endif %}
+        </div>
+
+        <div class="space-y-4">
+            {% if field.errors %}
+            <div class="text-red-600 text-sm mb-2">
+                {{ field.errors }}
+            </div>
+            {% endif %}
+
+            <span class="relative block w-full">
+                {{ field }}
+            </span>
+        </div>
+    </section>
+    {% endfor %}
+
+    <hr role="presentation" class="my-10 w-full border-t border-zinc-950/5 dark:border-white/5">
+
+    <div class="flex justify-end gap-4">
+        <a href="{% url 'mailing_lists:show_list' pk=mailing_list.id %}"
+           class="px-4 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300">
+            Anuluj
+        </a>
+
+        <!-- Tylko jeden przycisk przy edycji -->
+        <button type="submit"
+                class="relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-zinc-900 text-white dark:bg-zinc-600 hover:bg-zinc-800">
+            Zapisz zmiany
+        </button>
+    </div>
+</form>
+{% endblock %}

@@ -13,5 +13,8 @@ urlpatterns = [
 
     # ---- Adresy e-mail na liście ----
     path('<int:list_pk>/contacts/create/', views.create_contact_view, name='create_contact'),
+    path('<int:list_pk>/contacts/<int:contact_pk>/edit/', views.edit_contact_view, name='edit_contact'),
+
+    path('<int:list_pk>/contacts/<int:contact_pk>/delete/', views.delete_contact_view, name='delete_contact'),
 
 ]
