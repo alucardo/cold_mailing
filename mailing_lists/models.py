@@ -19,6 +19,20 @@ class MailingList(models.Model):
     def __str__(self):
         return self.name
 
+    def total_contacts(self):
+        """Całkowita liczba kontaktów na liście"""
+        return self.contacts.count()
+
+    def active_contacts(self):
+        """Liczba aktywnych kontaktów"""
+        return self.contacts.filter(status='active').count()
+
+    def contact_summary(self):
+        """Podsumowanie: '5 z 10'"""
+        active = self.active_contacts()
+        total = self.total_contacts()
+        return f"{active} z {total}"
+
 
 class Contact(models.Model):
     """Kontakt w liście mailingowej"""

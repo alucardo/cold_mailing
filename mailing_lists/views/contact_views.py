@@ -24,7 +24,7 @@ def create_contact_view(request, list_pk):
                 return redirect('mailing_lists:create_contact', list_pk=list_pk)
             else:
                 # Zapisz i wróć do listy
-                return redirect('mailing_lists:list_detail', pk=list_pk)
+                return redirect('mailing_lists:show_list', pk=list_pk)
     else:
         form = ContactForm(mailing_list=mailing_list)
 
