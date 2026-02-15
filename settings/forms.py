@@ -90,3 +90,14 @@ class EmailAccountForm(forms.ModelForm):
             return self.instance.imap_password
 
         return password
+
+class TestEmailForm(forms.Form):
+    """Formularz do testowania wysyłania emaili"""
+    recipient_email = forms.EmailField(
+        label="Adres odbiorcy",
+        help_text="Email na który zostanie wysłana wiadomość testowa",
+        widget=forms.EmailInput(attrs={
+            'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
+            'placeholder': 'test@example.com'
+        })
+    )

@@ -1,0 +1,110 @@
+{% extends "loged.html" %}
+
+{% block content %}
+    <div class="flex items-end justify-between gap-4">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">{{ account.name }} - {{ account.email }}</h1>
+        <a
+            class="-my-0.5 relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-(--btn-border) dark:bg-(--btn-bg) before:absolute before:inset-0 before:-z-10 before:rounded-[calc(var(--radius-lg)-1px)] before:bg-(--btn-bg) before:shadow-sm dark:before:hidden dark:border-white/5 text-white [--btn-bg:var(--color-zinc-900)] dark:[--btn-bg:var(--color-zinc-600)] cursor-default"
+            href="{% url 'settings:email_accounts' %}"
+        >
+            Wszystkie konta
+        </a>
+    </div>
+
+    <!-- Formularz testowy SMTP -->
+    <div class="mt-8">
+        <div class="rounded-lg border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <h2 class="text-lg font-semibold text-zinc-950 dark:text-white mb-4">Test wysyłania SMTP</h2>
+
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+
+                <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div class="space-y-1">
+                        <h3 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 dark:text-white">
+                            {{ test_form.recipient_email.label }}
+                        </h3>
+                        {% if test_form.recipient_email.help_text %}
+                        <p class="text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400">
+                            {{ test_form.recipient_email.help_text }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="space-y-4">
+                        {% if test_form.recipient_email.errors %}
+                        <div class="text-red-600 text-sm mb-2">
+                            {{ test_form.recipient_email.errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="flex gap-2">
+                            {{ test_form.recipient_email }}
+                            <button
+                                type="submit"
+                                class="relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-zinc-900 text-white dark:bg-zinc-600 hover:bg-zinc-800 whitespace-nowrap">
+                                Wyślij test
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Informacje o koncie -->
+    <div class="mt-8">
+        <div class="rounded-lg border border-zinc-950/10 bg-white p-6 dark:border-white/10 dark:bg-zinc-900">
+            <h2 class="text-lg font-semibold text-zinc-950 dark:text-white mb-4">Szczegóły konta</h2>
+
+            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Nazwa</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.name }}</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Email</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.email }}</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">From Name</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.from_name }}</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Status</dt>
+                    <dd class="mt-1">
+                        <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
+                            {% if account.is_active %}bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400{% else %}bg-gray-50 text-gray-700 dark:bg-gray-500/10 dark:text-gray-400{% endif %}">
+                            {% if account.is_active %}Aktywne{% else %}Nieaktywne{% endif %}
+                        </span>
+                    </dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">SMTP Host</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.smtp_host }}:{{ account.smtp_port }}</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">IMAP Host</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.imap_host }}:{{ account.imap_port }}</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Data utworzenia</dt>
+                    <dd class="mt-1 text-sm text-zinc-950 dark:text-white">{{ account.created_at|date:"d.m.Y H:i" }}</dd>
+                </div>
+            </dl>
+
+            <div class="mt-6 flex gap-4">
+                <a href="{% url 'settings:edit_email_account' pk=account.id %}"
+                   class="text-sm/6 font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
+                    Edytuj konto
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

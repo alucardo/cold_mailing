@@ -13,6 +13,7 @@ urlpatterns = [
     # ---- Cold email accounts ----
     path('email-accounts/', views.email_accounts_view, name='email_accounts'),
     path('email-accounts/create/', views.create_email_account_view, name='create_email_account'),
+    path('email-accounts/<int:pk>/', views.show_email_account_view, name='show_email_account'),
     path('email-accounts/edit/<int:pk>/', views.edit_email_account_view, name='edit_email_account'),
     path('email-accounts/delete/<int:pk>/', views.delete_email_account_view, name='delete_email_account'),
 ]

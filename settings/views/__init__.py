@@ -12,6 +12,7 @@ from .api_key_views import (
 from .email_account_views import (
     email_accounts_view,
     create_email_account_view,
+    show_email_account_view,
     edit_email_account_view,
     delete_email_account_view,
 )
@@ -24,6 +25,7 @@ __all__ = [
     'delete_api_view',
     'email_accounts_view',
     'create_email_account_view',
+    'show_email_account_view',
     'edit_email_account_view',
     'delete_email_account_view',
 ]
