@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'pages',
     'dashboards',
     'settings',
+    'mailing_lists',
 ]
 
 MIDDLEWARE = [

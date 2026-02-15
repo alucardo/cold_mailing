@@ -3,6 +3,7 @@ from . import views
 
 app_name = 'settings'
 urlpatterns = [
+    path('', views.home, name='home'),
     path('apis/', views.apis_view, name='list_apis'),
     path('apis/create/', views.create_api_view, name='create_api'),
     path('apis/edit/<int:pk>/', views.edit_api_view, name='edit_api'),

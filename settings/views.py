@@ -4,6 +4,11 @@ from django.contrib import messages
 from .models import ApiType, ApiSetting
 from .forms import CreateApiForm
 
+
+
+def home(request):
+    return render(request, 'settings/home.html')
+
 # Create your views here.
 def apis_view(request):
     api_list = ApiSetting.objects.all()

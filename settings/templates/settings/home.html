@@ -1,0 +1,14 @@
+{% extends "loged.html" %}
+
+{% block content %}
+    <div class="flex items-end justify-between gap-4">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Ustawienia</h1>
+    </div>
+    <div class="flow-root">
+        <div class="mt-4 [--gutter:--spacing(6)] lg:[--gutter:--spacing(10)] -mx-(--gutter) overflow-x-auto whitespace-nowrap">
+            <div class="inline-block min-w-full align-middle sm:px-(--gutter)">
+                <a href="{% url 'settings:list_apis' %}">Klucze API</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
