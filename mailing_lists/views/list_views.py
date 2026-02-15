@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import MailingList
-from .forms import MailingListForm
+from ..models import MailingList
+from ..forms import MailingListForm
 
 
 def lists_view(request):
@@ -10,7 +10,19 @@ def lists_view(request):
     return render(request, 'mailing_lists/lists.html', {'lists': lists})
 
 
+def show_list_view(request, pk):
+    """Szczegóły listy mailingowej + kontakty"""
+    mailing_list = get_object_or_404(MailingList, pk=pk)
+    contacts = mailing_list.contacts.all()
+
+    return render(request, 'mailing_lists/show_list.html', {
+        'mailing_list': mailing_list,
+        'contacts': contacts
+    })
+
+
 def create_list_view(request):
+    """Tworzenie nowej listy mailingowej"""
     if request.method == 'POST':
         form = MailingListForm(request.POST)
         if form.is_valid():
@@ -24,6 +36,7 @@ def create_list_view(request):
 
 
 def edit_list_view(request, pk):
+    """Edycja listy mailingowej"""
     mailing_list = get_object_or_404(MailingList, pk=pk)
 
     if request.method == 'POST':
@@ -42,6 +55,7 @@ def edit_list_view(request, pk):
 
 
 def delete_list_view(request, pk):
+    """Usuwanie listy mailingowej"""
     mailing_list = get_object_or_404(MailingList, pk=pk)
 
     if request.method == 'POST':
