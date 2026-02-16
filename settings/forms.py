@@ -1,6 +1,12 @@
 from django import forms
 from .models import ApiSetting, EmailAccount, EmailFooter
-
+from config.form_styles import (
+    FORM_INPUT_CLASS,
+    FORM_CHECKBOX_CLASS,
+    FORM_TEXTAREA_CLASS,
+    FORM_TEXTAREA_MONO_CLASS,
+    FORM_SELECT_CLASS,
+)
 
 class CreateApiForm(forms.ModelForm):
     class Meta:
@@ -10,14 +16,14 @@ class CreateApiForm(forms.ModelForm):
         # Dodaj klasy CSS do każdego pola
         widgets = {
             'api_type': forms.Select(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
+                'class': FORM_SELECT_CLASS
             }),
             'name': forms.TextInput(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
+                'class': FORM_INPUT_CLASS
             }),
             'text': forms.Textarea(attrs={
                 'rows': 5,
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
+                'class': FORM_TEXTAREA_CLASS
             })
         }
 
@@ -32,27 +38,24 @@ class EmailAccountForm(forms.ModelForm):
             'is_active'
         ]
 
-        INPUT_CLASS = 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
-        CHECKBOX_CLASS = 'rounded border-zinc-950/10 dark:border-white/10'
-
         widgets = {
-            'email': forms.EmailInput(attrs={'class': INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
-            'name': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Sprzedaż 1'}),
-            'from_name': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Jan Kowalski'}),
+            'email': forms.EmailInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
+            'name': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'Sprzedaż 1'}),
+            'from_name': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'Jan Kowalski'}),
 
-            'smtp_host': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'smtp.domena.pl'}),
-            'smtp_port': forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': '587'}),
-            'smtp_username': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
-            'smtp_password': forms.PasswordInput(attrs={'class': INPUT_CLASS, 'placeholder': '••••••••'}),
-            'smtp_use_tls': forms.CheckboxInput(attrs={'class': CHECKBOX_CLASS}),
+            'smtp_host': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'smtp.domena.pl'}),
+            'smtp_port': forms.NumberInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': '587'}),
+            'smtp_username': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
+            'smtp_password': forms.PasswordInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': '••••••••'}),
+            'smtp_use_tls': forms.CheckboxInput(attrs={'class': FORM_CHECKBOX_CLASS}),
 
-            'imap_host': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'imap.domena.pl'}),
-            'imap_port': forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': '993'}),
-            'imap_username': forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
-            'imap_password': forms.PasswordInput(attrs={'class': INPUT_CLASS, 'placeholder': '••••••••'}),
-            'imap_use_ssl': forms.CheckboxInput(attrs={'class': CHECKBOX_CLASS}),
+            'imap_host': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'imap.domena.pl'}),
+            'imap_port': forms.NumberInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': '993'}),
+            'imap_username': forms.TextInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': 'kontakt@domena.pl'}),
+            'imap_password': forms.PasswordInput(attrs={'class': FORM_INPUT_CLASS, 'placeholder': '••••••••'}),
+            'imap_use_ssl': forms.CheckboxInput(attrs={'class': FORM_CHECKBOX_CLASS}),
 
-            'is_active': forms.CheckboxInput(attrs={'class': CHECKBOX_CLASS}),
+            'is_active': forms.CheckboxInput(attrs={'class': FORM_CHECKBOX_CLASS}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -97,7 +100,7 @@ class TestEmailForm(forms.Form):
         label="Adres odbiorcy",
         help_text="Email na który zostanie wysłana wiadomość testowa",
         widget=forms.EmailInput(attrs={
-            'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
+            'class': FORM_INPUT_CLASS,
             'placeholder': 'test@example.com'
         })
     )
@@ -110,17 +113,13 @@ class EmailFooterForm(forms.ModelForm):
         model = EmailFooter
         fields = ['name', 'html_content', 'is_default']
 
-        INPUT_CLASS = 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
-        TEXTAREA_CLASS = 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white font-mono text-sm'
-        CHECKBOX_CLASS = 'rounded border-zinc-950/10 dark:border-white/10'
-
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
+                'class': FORM_INPUT_CLASS,
                 'placeholder': 'Stopka promocyjna'
             }),
             'html_content': forms.Textarea(attrs={
-                'class': TEXTAREA_CLASS,
+                'class': FORM_TEXTAREA_MONO_CLASS,
                 'rows': 15,
                 'placeholder': '''<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
                       <p style="color: #666; font-size: 14px;">
@@ -132,7 +131,7 @@ class EmailFooterForm(forms.ModelForm):
                     </div>'''
             }),
             'is_default': forms.CheckboxInput(attrs={
-                'class': CHECKBOX_CLASS
+                'class': FORM_CHECKBOX_CLASS
             }),
         }
 
