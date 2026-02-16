@@ -121,3 +121,60 @@ class EmailAccount(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email})"
+
+
+class EmailFooter(models.Model):
+    """
+    Stopka HTML dla emaili wysyłanych z konta.
+    Jedno konto może mieć wiele stopek, jedna jest domyślna.
+    """
+
+    account = models.ForeignKey(
+        EmailAccount,
+        on_delete=models.CASCADE,
+        related_name='footers',
+        verbose_name=_("Konto email")
+    )
+
+    name = models.CharField(
+        _("Nazwa stopki"),
+        max_length=200,
+        help_text=_("Np. 'Stopka promocyjna', 'Stopka standard'")
+    )
+
+    html_content = models.TextField(
+        _("Treść HTML"),
+        help_text=_("Kod HTML stopki wyświetlany pod treścią emaila")
+    )
+
+    is_default = models.BooleanField(
+        _("Domyślna stopka"),
+        default=False,
+        help_text=_("Czy ta stopka jest domyślna dla tego konta")
+    )
+
+    created_at = models.DateTimeField(_("Data utworzenia"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Data aktualizacji"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("Stopka email")
+        verbose_name_plural = _("Stopki email")
+        ordering = ['-is_default', '-created_at']
+
+    def __str__(self):
+        default_marker = " [DOMYŚLNA]" if self.is_default else ""
+        return f"{self.name} ({self.account.email}){default_marker}"
+
+    def save(self, *args, **kwargs):
+        """
+        Jeśli ustawiamy tę stopkę jako domyślną,
+        usuń flagę 'default' z innych stopek tego konta.
+        """
+        if self.is_default:
+            # Usuń is_default z innych stopek tego konta
+            EmailFooter.objects.filter(
+                account=self.account,
+                is_default=True
+            ).exclude(pk=self.pk).update(is_default=False)
+
+        super().save(*args, **kwargs)
