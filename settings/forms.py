@@ -1,5 +1,5 @@
 from django import forms
-from .models import ApiSetting, ApiType, EmailAccount
+from .models import ApiSetting, EmailAccount, EmailFooter
 
 
 class CreateApiForm(forms.ModelForm):
@@ -101,3 +101,49 @@ class TestEmailForm(forms.Form):
             'placeholder': 'test@example.com'
         })
     )
+
+
+class EmailFooterForm(forms.ModelForm):
+    """Formularz do tworzenia/edycji stopek email"""
+
+    class Meta:
+        model = EmailFooter
+        fields = ['name', 'html_content', 'is_default']
+
+        INPUT_CLASS = 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
+        TEXTAREA_CLASS = 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white font-mono text-sm'
+        CHECKBOX_CLASS = 'rounded border-zinc-950/10 dark:border-white/10'
+
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': INPUT_CLASS,
+                'placeholder': 'Stopka promocyjna'
+            }),
+            'html_content': forms.Textarea(attrs={
+                'class': TEXTAREA_CLASS,
+                'rows': 15,
+                'placeholder': '''<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                      <p style="color: #666; font-size: 14px;">
+                        Pozdrawiam,<br>
+                        <strong>Jan Kowalski</strong><br>
+                        Specjalista ds. Sprzedaży<br>
+                        email@firma.pl | +48 123 456 789
+                      </p>
+                    </div>'''
+            }),
+            'is_default': forms.CheckboxInput(attrs={
+                'class': CHECKBOX_CLASS
+            }),
+        }
+
+        labels = {
+            'name': 'Nazwa stopki',
+            'html_content': 'Kod HTML stopki',
+            'is_default': 'Ustaw jako domyślną',
+        }
+
+        help_texts = {
+            'name': 'Nazwa opisowa stopki (np. "Stopka promocyjna", "Stopka standard")',
+            'html_content': 'Pełny kod HTML stopki. Użyj inline CSS dla stylowania.',
+            'is_default': 'Jeśli zaznaczone, ta stopka będzie używana domyślnie dla tego konta',
+        }
