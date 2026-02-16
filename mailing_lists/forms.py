@@ -1,5 +1,9 @@
 from django import forms
 from .models import MailingList, Contact
+from config.form_styles import (
+    FORM_INPUT_CLASS,
+    FORM_SELECT_CLASS,
+)
 
 
 class MailingListForm(forms.ModelForm):
@@ -9,7 +13,7 @@ class MailingListForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
+                'class': FORM_INPUT_CLASS,
                 'placeholder': 'np. Klienci Q1 2026'
             })
         }
@@ -24,15 +28,15 @@ class ContactForm(forms.ModelForm):
 
         widgets = {
             'email': forms.EmailInput(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
+                'class': FORM_INPUT_CLASS,
                 'placeholder': 'jan@example.com'
             }),
             'name': forms.TextInput(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white',
+                'class': FORM_INPUT_CLASS,
                 'placeholder': 'Jan Kowalski'
             }),
             'status': forms.Select(attrs={
-                'class': 'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-zinc-950 border border-zinc-950/10 bg-transparent dark:bg-white/5 dark:text-white'
+                'class': FORM_SELECT_CLASS
             })
         }
 
