@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'dashboards',
     'settings',
     'mailing_lists',
+    'email_campaigns',
 ]
 
 MIDDLEWARE = [
