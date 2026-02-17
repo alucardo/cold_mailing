@@ -1,7 +1,7 @@
 {% extends "loged.html" %}
 
 {% block content %}
-    <form class="mx-auto max-w-4xl" method="post">
+    <form class="mx-auto max-w-4xl" method="post" id="footer-form">
         {% csrf_token %}
 
         <div>
@@ -55,4 +55,6 @@
             </button>
         </div>
     </form>
+
+    {% include "settings/footers/_partials/_preview.html" %}
 {% endblock %}

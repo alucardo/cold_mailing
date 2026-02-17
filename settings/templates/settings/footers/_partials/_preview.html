@@ -1,0 +1,98 @@
+<!-- Podgląd stopki - używany w create.html i edit.html -->
+<div class="mx-auto max-w-4xl mt-10">
+    <hr role="presentation" class="mb-10 w-full border-t border-zinc-950/10 dark:border-white/10">
+
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 dark:text-white">
+            Podgląd stopki
+        </h2>
+        <button
+            type="button"
+            onclick="updatePreview()"
+            class="text-sm/6 font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+        >
+            Odśwież podgląd
+        </button>
+    </div>
+
+    <!-- Symulacja treści emaila -->
+    <div class="rounded-lg border border-zinc-950/10 dark:border-white/10 overflow-hidden">
+        <!-- Nagłówek jak w kliencie email -->
+        <div class="bg-zinc-50 dark:bg-zinc-800 px-4 py-3 border-b border-zinc-950/10 dark:border-white/10">
+            <p class="text-xs text-zinc-500 dark:text-zinc-400">
+                <span class="font-medium">Od:</span> {{ account.from_name }} &lt;{{ account.email }}&gt;
+            </p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                <span class="font-medium">Temat:</span> Przykładowy temat wiadomości
+            </p>
+        </div>
+
+        <!-- Iframe izolujący style -->
+        <iframe
+            id="footer-preview"
+            class="w-full bg-white"
+            style="min-height: 300px; border: none;"
+            srcdoc=""
+        ></iframe>
+    </div>
+</div>
+
+<script>
+    const EMAIL_BODY = `
+        <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333; padding: 20px;">
+            <p>Cześć,</p>
+            <p>To jest przykładowa treść wiadomości email. Tutaj będzie znajdował się tekst kampanii cold mailingowej.</p>
+            <p>Chciałem się zapytać czy byłby Pan zainteresowany współpracą...</p>
+            <p>Czekam na odpowiedź,</p>
+        </div>
+    `;
+
+    function updatePreview() {
+        const textarea = document.getElementById('id_html_content');
+        const footerHtml = textarea ? textarea.value : '';
+
+        const fullHtml = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        background: white;
+                    }
+                </style>
+            </head>
+            <body>
+                ${EMAIL_BODY}
+                ${footerHtml}
+            </body>
+            </html>
+        `;
+
+        const iframe = document.getElementById('footer-preview');
+        iframe.srcdoc = fullHtml;
+
+        iframe.onload = function() {
+            try {
+                const height = iframe.contentDocument.body.scrollHeight;
+                iframe.style.height = (height + 20) + 'px';
+            } catch(e) {}
+        };
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('id_html_content');
+
+        if (textarea) {
+            updatePreview();
+
+            let debounceTimer;
+            textarea.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(updatePreview, 500);
+            });
+        }
+    });
+</script>

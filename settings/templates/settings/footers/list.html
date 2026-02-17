@@ -12,12 +12,20 @@
                 Stopki dla {{ account.email }}
             </h1>
         </div>
-        <a
-            class="-my-0.5 relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-(--btn-border) dark:bg-(--btn-bg) before:absolute before:inset-0 before:-z-10 before:rounded-[calc(var(--radius-lg)-1px)] before:bg-(--btn-bg) before:shadow-sm dark:before:hidden dark:border-white/5 text-white [--btn-bg:var(--color-zinc-900)] dark:[--btn-bg:var(--color-zinc-600)] cursor-default"
-            href="{% url 'settings:create_footer' account_pk=account.id %}"
-        >
-            Dodaj stopkę
-        </a>
+        <div>
+            <a
+                    href="{% url 'settings:show_email_account' pk=account.id %}"
+                    class="relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent text-zinc-950 data-hover:bg-zinc-950/5 dark:text-white cursor-default"
+                >
+                    Cofnij
+                </a>
+            <a
+                class="-my-0.5 relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-(--btn-border) dark:bg-(--btn-bg) before:absolute before:inset-0 before:-z-10 before:rounded-[calc(var(--radius-lg)-1px)] before:bg-(--btn-bg) before:shadow-sm dark:before:hidden dark:border-white/5 text-white [--btn-bg:var(--color-zinc-900)] dark:[--btn-bg:var(--color-zinc-600)] cursor-default"
+                href="{% url 'settings:create_footer' account_pk=account.id %}"
+            >
+                Dodaj stopkę
+            </a>
+        </div>
     </div>
 
     <div class="flow-root">
