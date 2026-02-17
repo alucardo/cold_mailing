@@ -1,0 +1,84 @@
+{% extends "loged.html" %}
+
+{% block content %}
+    <div class="flex items-end justify-between gap-4">
+        <div>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                <a href="{% url 'settings:email_accounts' %}" class="hover:underline">Konta email</a>
+                / <a href="{% url 'settings:show_email_account' pk=account.id %}" class="hover:underline">{{ account.name }}</a>
+                / Stopki
+            </p>
+            <h1 class="mt-1 text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
+                Stopki dla {{ account.email }}
+            </h1>
+        </div>
+        <a
+            class="-my-0.5 relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6 border-transparent bg-(--btn-border) dark:bg-(--btn-bg) before:absolute before:inset-0 before:-z-10 before:rounded-[calc(var(--radius-lg)-1px)] before:bg-(--btn-bg) before:shadow-sm dark:before:hidden dark:border-white/5 text-white [--btn-bg:var(--color-zinc-900)] dark:[--btn-bg:var(--color-zinc-600)] cursor-default"
+            href="{% url 'settings:create_footer' account_pk=account.id %}"
+        >
+            Dodaj stopkę
+        </a>
+    </div>
+
+    <div class="flow-root">
+        <div class="mt-4 [--gutter:--spacing(6)] lg:[--gutter:--spacing(10)] -mx-(--gutter) overflow-x-auto whitespace-nowrap">
+            <div class="inline-block min-w-full align-middle sm:px-(--gutter)">
+                <table class="min-w-full text-left text-sm/6 text-zinc-950 dark:text-white">
+                    <thead class="text-zinc-500 dark:text-zinc-400">
+                        <tr>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1"></th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">Nazwa</th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">Data utworzenia</th>
+                            <th class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for footer in footers %}
+                            <tr class="hover:bg-zinc-950/2.5 dark:hover:bg-white/2.5">
+                                <td class="border-b border-zinc-950/5 dark:border-white/5 px-4 py-4 text-center">
+                                    <span
+                                        title="{% if footer.is_default %}Domyślna{% else %}Niedomyślna{% endif %}"
+                                        class="inline-block w-2.5 h-2.5 rounded-full cursor-help
+                                            {% if footer.is_default %}bg-green-500{% else %}bg-gray-400{% endif %}">
+                                    </span>
+                                </td>
+                                <td class="text-zinc-500 border-b border-zinc-950/5 dark:border-white/5 px-4 py-4">
+                                    {{ footer.name }}
+                                    {% if footer.is_default %}
+                                        <span class="ml-2 inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-500/10 dark:text-green-400">
+                                            Domyślna
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-zinc-500 border-b border-zinc-950/5 dark:border-white/5 px-4 py-4">
+                                    {{ footer.created_at|date:"d.m.Y H:i" }}
+                                </td>
+                                <td class="text-zinc-500 border-b border-zinc-950/5 dark:border-white/5 px-4 py-4">
+                                    <a href="{% url 'settings:edit_footer' account_pk=account.id pk=footer.id %}"
+                                       class="text-sm/6 font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
+                                        Edytuj
+                                    </a>
+                                    <form method="post" action="{% url 'settings:delete_footer' account_pk=account.id pk=footer.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button
+                                            type="submit"
+                                            onclick="return confirm('Czy na pewno usunąć stopkę {{ footer.name }}?')"
+                                            class="text-sm/6 font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 ml-4">
+                                            Usuń
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
+                                    Brak stopek. <a href="{% url 'settings:create_footer' account_pk=account.id %}" class="text-blue-600 hover:underline">Dodaj pierwszą stopkę</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -16,4 +16,10 @@ urlpatterns = [
     path('email-accounts/<int:pk>/', views.show_email_account_view, name='show_email_account'),
     path('email-accounts/edit/<int:pk>/', views.edit_email_account_view, name='edit_email_account'),
     path('email-accounts/delete/<int:pk>/', views.delete_email_account_view, name='delete_email_account'),
+
+    # ---- Account footers ----
+    path('email-accounts/<int:account_pk>/footers/', views.list_footers_view, name='list_footers'),
+    path('email-accounts/<int:account_pk>/footers/create/', views.create_footer_view, name='create_footer'),
+    path('email-accounts/<int:account_pk>/footers/edit/<int:pk>/', views.edit_footer_view, name='edit_footer'),
+    path('email-accounts/<int:account_pk>/footers/delete/<int:pk>/', views.delete_footer_view, name='delete_footer'),
 ]

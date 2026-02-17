@@ -127,6 +127,11 @@
                    class="text-sm/6 font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
                     Edytuj konto
                 </a>
+
+                <a href="{% url 'settings:list_footers' account_pk=account.id %}"
+                   class="text-sm/6 font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
+                    Zarządzaj stopkami
+                </a>
             </div>
         </div>
     </div>

@@ -17,6 +17,13 @@ from .email_account_views import (
     delete_email_account_view,
 )
 
+from .footer_views import (
+    list_footers_view,
+    create_footer_view,
+    edit_footer_view,
+    delete_footer_view,
+)
+
 __all__ = [
     'home',
     'apis_view',
@@ -28,4 +35,8 @@ __all__ = [
     'show_email_account_view',
     'edit_email_account_view',
     'delete_email_account_view',
+    'list_footers_view',
+    'create_footer_view',
+    'edit_footer_view',
+    'delete_footer_view',
 ]
